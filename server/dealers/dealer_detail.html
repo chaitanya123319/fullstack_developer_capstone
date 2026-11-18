@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ dealer.name }} - Reviews</title>
+    <style>
+        body{font-family:Arial;background:#f1f5f9;margin:0;color:#10243a}
+        header{background:#10243a;color:white;padding:20px 7%}
+        .container{max-width:900px;margin:35px auto;padding:20px}
+        .card{background:white;padding:25px;margin:20px 0;border-radius:10px;box-shadow:0 3px 12px #ddd}
+        a,button{background:#e69a19;color:white;padding:12px 18px;text-decoration:none;border:0;border-radius:5px}
+    </style>
+</head>
+<body>
+<header><h2>Cars Dealership</h2></header>
+
+<div class="container">
+    <div class="card">
+        <h1>{{ dealer.name }}</h1>
+        <p>{{ dealer.address }}, {{ dealer.city }}, {{ dealer.state }}</p>
+        <p>Phone: {{ dealer.phone }}</p>
+        <p>ZIP: {{ dealer.zip_code }}</p>
+        <p>Website: {{ dealer.website }}</p>
+    </div>
+
+    <h2>Customer Reviews</h2>
+
+    {% for review in reviews %}
+    <div class="card">
+        <h3>{{ review.name }}</h3>
+        <p>{{ review.review }}</p>
+        <p>Purchase: {{ review.purchase }}</p>
+        <small>{{ review.created_at }}</small>
+    </div>
+    {% empty %}
+    <p>No reviews yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'post_review' dealer.id %}">Write a Review</a>
+    <a href="/">Back to Dealers</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cars Dealership</title>
+    <style>
+        body {font-family:Arial;background:#f1f5f9;margin:0;color:#10243a}
+        header {background:#10243a;color:white;padding:22px 7%;display:flex;justify-content:space-between}
+        header a {color:white;margin-left:20px;text-decoration:none}
+        .hero {background:#10243a;color:white;text-align:center;padding:55px 15px}
+        .container {max-width:1100px;margin:35px auto;padding:15px}
+        .filter {margin-bottom:25px}
+        .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+        .card {background:white;padding:25px;border-radius:12px;box-shadow:0 4px 15px #ddd}
+        .card h2 {color:#e69a19}
+        button,.btn {background:#e69a19;color:white;padding:11px 18px;border:0;border-radius:5px;text-decoration:none;cursor:pointer}
+        input {padding:10px;border:1px solid #ccc;border-radius:5px}
+    </style>
+</head>
+<body>
+<header>
+    <h2>Cars Dealership</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/static/About.html">About Us</a>
+        <a href="/static/Contact.html">Contact Us</a>
+        <span>Welcome {{ request.user.username }}</span>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Find Your Perfect Car Dealership</h1>
+    <p>Explore trusted dealerships across the United States</p>
+</section>
+
+<div class="container">
+    <h1>Our Dealerships</h1>
+
+    <form method="GET" class="filter">
+        <input type="text" name="state" placeholder="Filter by state" value="{{ state }}">
+        <button type="submit">Search</button>
+        <a href="/" class="btn">Show All</a>
+    </form>
+
+    <div class="grid">
+        {% for dealer in dealers %}
+        <div class="card">
+            <h2>{{ dealer.name }}</h2>
+            <p><b>City:</b> {{ dealer.city }}</p>
+            <p><b>State:</b> {{ dealer.state }}</p>
+            <p><b>Address:</b> {{ dealer.address }}</p>
+            <p><b>Phone:</b> {{ dealer.phone }}</p>
+            <a class="btn" href="{% url 'dealer_detail' dealer.id %}">View Dealer</a>
+        </div>
+        {% empty %}
+        <p>No dealerships found.</p>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

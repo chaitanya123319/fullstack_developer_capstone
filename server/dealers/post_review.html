@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Review</title>
+    <style>
+        body{font-family:Arial;background:#f1f5f9;padding:30px;color:#10243a}
+        form{max-width:550px;margin:40px auto;background:white;padding:30px;border-radius:12px}
+        input,textarea{width:100%;padding:12px;margin:10px 0;box-sizing:border-box}
+        button{background:#e69a19;color:white;padding:12px 25px;border:0;cursor:pointer}
+    </style>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+    <h1>Review {{ dealer.name }}</h1>
+
+    <label>Your Name</label>
+    <input type="text" name="name" required>
+
+    <label>Vehicle Purchased</label>
+    <input type="text" name="purchase">
+
+    <label>Your Review</label>
+    <textarea name="review" rows="6" required></textarea>
+
+    <button type="submit">Submit Review</button>
+    <a href="{% url 'dealer_detail' dealer.id %}">Cancel</a>
+</form>
+</body>
+</html>
