@@ -10,3 +10,4 @@ __pycache__/
 .env
 
 server/register.json
+server/login.json
