@@ -1,0 +1,113 @@
+:root {
+  --ink: #1d2433;
+  --muted: #5b6577;
+  --wash: #f3f5f8;
+  --line: #d9dee7;
+  --accent: #0f5c5c;
+}
+
+body {
+  color: var(--ink);
+  background: #fff;
+  line-height: 1.6;
+}
+
+.site-nav {
+  background: var(--ink);
+}
+
+.site-nav .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.site-nav .nav-link {
+  color: #c9d1de;
+  border-bottom: 3px solid transparent;
+}
+
+.site-nav .nav-link:hover,
+.site-nav .nav-link:focus-visible {
+  color: #fff;
+}
+
+.site-nav .nav-link.active {
+  color: #fff;
+  border-bottom-color: #5fd0c8;
+  font-weight: 600;
+}
+
+.page-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.lead-text {
+  max-width: 62ch;
+  color: var(--muted);
+}
+
+.page-image {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.section {
+  padding: 3rem 0;
+}
+
+.section-wash {
+  background: var(--wash);
+}
+
+.team-card {
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.team-photo {
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.team-role {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.team-card a,
+.contact-list a {
+  color: var(--accent);
+}
+
+.contact-list dt {
+  font-weight: 600;
+}
+
+.contact-list dd {
+  margin-bottom: 1rem;
+  color: var(--muted);
+}
+
+.hours-table td {
+  padding: 0.25rem 1.5rem 0.25rem 0;
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}

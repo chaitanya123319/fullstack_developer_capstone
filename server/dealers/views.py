@@ -73,7 +73,7 @@ def create_dealer_review(request, dealer_id):
     except Dealer.DoesNotExist:
         return Response({'error': 'Dealer not found'}, status=404)
 
-    
+
 def home(request):
     dealers = Dealer.objects.all()
     state = request.GET.get('state', '')
@@ -120,4 +120,3 @@ def post_review(request, dealer_id):
     return render(request, 'dealers/post_review.html', {
         'dealer': dealer
     })
-

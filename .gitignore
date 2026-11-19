@@ -1,0 +1,12 @@
+# Django database and session files
+server/db.sqlite3
+server/cookies.txt
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+
+server/register.json

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+5q8sab50+0q^py9o49t-&vyv_@fn%bh_25z1w@qma2p1$9m^9'
+# CHANGED: can be overridden with the DJANGO_SECRET_KEY environment variable (set one for deployment).
+SECRET_KEY = os.getenv(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-+5q8sab50+0q^py9o49t-&vyv_@fn%bh_25z1w@qma2p1$9m^9',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# CHANGED: allow the local server and IBM Code Engine hostnames.
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.codeengine.app',
+    '.codeengine.appdomain.cloud',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.codeengine.app',
+    'https://*.codeengine.appdomain.cloud',
+]
 
 
 # Application definition
@@ -41,6 +56,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'dealers',
+    'djangoapp',  # CHANGED: new app with the /djangoapp/... routes
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,7 +74,7 @@ ROOT_URLCONF = 'djangoproj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend' / 'static'],  # CHANGED: lets About.html / Contact.html load as templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,6 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+# CHANGED: serves /static/style.css from server/frontend/static
+STATICFILES_DIRS = [BASE_DIR / 'frontend' / 'static']
 
 
 # Email

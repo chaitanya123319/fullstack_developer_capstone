@@ -1,88 +1,94 @@
-# Cars Dealership Application
+# Best Cars Dealership
 
-## Project Description
-A full-stack Cars Dealership application that allows users to explore car dealerships, view dealer details, register and log in, and submit dealership reviews.
+**Repository name:** `fullstack_developer_capstone`
+**Project name:** Best Cars Dealership
 
-## Technologies Used
-- **Frontend:** React, HTML, CSS, JavaScript
-- **Backend:** Python, Django, Django REST Framework
-- **Database:** SQLite
-- **API Testing:** cURL
-- **Version Control:** Git and GitHub
+A full-stack web application for finding car dealerships, reading customer reviews and posting your own.
+Built as the capstone project for the IBM Full Stack Developer course.
 
 ## Features
-- User registration and login
-- User authentication and logout
-- View all car dealerships
-- Search and filter dealerships by state
-- View dealership details
-- Read and submit dealership reviews
-- Sentiment analysis of customer reviews
-- Display car makes and models
-- About and Contact pages
 
-## Project Structure
-```text
-cars-dealership/
-├── server/
-│   ├── dealers/
-│   ├── djangoproj/
-│   ├── frontend/
-│   └── manage.py
-├── README.md
-└── .gitignore
+- Browse 50 dealerships and filter them by state
+- View a dealer's details and customer reviews
+- Sentiment analysis on every review (positive, neutral or negative)
+- Register, log in and log out
+- Logged-in users can post a review for a dealer
+- About Us and Contact Us pages
+- Django admin for managing car makes and models
+
+## Architecture
+
+| Service | Technology | Port |
+|---|---|---|
+| Web app and user API | Django + React | 8000 |
+| Dealers and reviews API | Express + MongoDB | 3030 |
+| Sentiment analyzer | Flask + NLTK VADER | 5050 |
+
+## Project structure
+
+```
+server/
+  djangoproj/            Django project settings and root URLs
+  djangoapp/             Auth, car makes/models, proxy views, admin
+    microservices/       Sentiment analyzer (Flask)
+  database/              Express + MongoDB API, sample data, docker-compose
+  frontend/
+    static/              About.html, Contact.html, style.css
+    src/                 React components (Register, Login, Dealers, Dealer, PostReview)
+.github/workflows/       CI: Python (flake8) and JavaScript (JSHint) lint jobs
 ```
 
-## How to Run the Project
+## Run locally
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/cars-dealership.git
-cd cars-dealership
-```
+1. **Dealers and reviews API** (needs Docker)
+   ```
+   cd server/database
+   docker compose up --build
+   ```
+2. **Sentiment analyzer**
+   ```
+   cd server/djangoapp/microservices
+   pip install -r requirements.txt
+   python app.py
+   ```
+3. **Django app**
+   ```
+   cd server
+   pip install -r requirements.txt
+   python manage.py makemigrations djangoapp
+   python manage.py migrate
+   python manage.py createsuperuser
+   python manage.py runserver
+   ```
 
-### 2. Set Up the Backend
-```bash
-cd server
-python -m venv venv
-```
+Environment variables (see `server/.env.example`): `backend_url` and `sentiment_analyzer_url`.
 
-Activate the virtual environment on Windows:
-```powershell
-.\venv\Scripts\Activate.ps1
-```
+## API endpoints
 
-Install dependencies:
-```bash
-pip install django djangorestframework django-cors-headers
-```
+Django (port 8000)
 
-### 3. Run Database Migrations
-```bash
-python manage.py migrate
-```
+| Method | Path | Purpose |
+|---|---|---|
+| POST | `/djangoapp/login` | Log in with `{"userName", "password"}` |
+| GET | `/djangoapp/logout` | Log out |
+| POST | `/djangoapp/register` | Create an account |
+| GET | `/djangoapp/get_cars` | All car makes and models |
+| GET | `/djangoapp/get_dealers[/<state>]` | Dealers, optionally by state |
+| GET | `/djangoapp/dealer/<id>` | One dealer |
+| GET | `/djangoapp/reviews/dealer/<id>` | Reviews for a dealer, with sentiment |
+| POST | `/djangoapp/add_review` | Post a review (login required) |
 
-### 4. Start the Django Server
-```bash
-python manage.py runserver
-```
+Express (port 3030): `/fetchDealers`, `/fetchDealers/<state>`, `/fetchDealer/<id>`,
+`/fetchReviews`, `/fetchReviews/dealer/<id>`, `POST /insert_review`.
 
-Open the application at:
-`http://127.0.0.1:8000/`
+Sentiment analyzer (port 5050): `GET /analyze/<text>` returns `{"sentiment": "positive"}`.
 
-### 5. Run the Frontend
-Open another terminal:
-```bash
-cd server/frontend
-npm install
-npm run dev
-```
+## Sample data
 
-## API Endpoints
-- `GET /api/dealers/` – Retrieve all dealerships
-- `GET /api/dealer/<dealer_id>/` – Retrieve dealership details
-- `GET /api/dealers/state/<state>/` – Filter dealerships by state
-- `GET /api/dealer/<dealer_id>/reviews/` – Retrieve dealership reviews
-- `POST /api/dealer/<dealer_id>/reviews/submit/` – Submit a dealership review
-- `POST /api/register/` – Register a user
-- `POST
+`server/database/data/` holds 50 sample dealers and their reviews. They are made-up demo data.
+Regenerate them with `python server/database/generate_data.py`.
+
+## Continuous integration
+
+`.github/workflows/main.yml` runs two jobs on every push and pull request:
+**Lint Python files** (flake8) and **Lint JavaScript files** (JSHint).
